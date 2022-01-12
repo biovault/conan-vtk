@@ -10,8 +10,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: Windows-msvc2017
-            os: windows-2019
+          - name: Windows
+            os: windows-2016
             compiler: msvc-2017
             build-cversion: 15
             build-runtime: MD
