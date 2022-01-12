@@ -1,0 +1,85 @@
+name: Build
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  # Job to buildwheels on all platforms
+  build_wheels:
+    name: Build wheels on ${{ matrix.name}}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - name: Windows-msvc2017
+            os: windows-2019
+            compiler: msvc-2017
+            build-cversion: 15
+            build-runtime: MD
+            build-config: Release
+
+          # - name: Linux_gcc9
+          #   os: ubuntu-18.04
+          #   build-compiler: gcc
+          #   build-cversion: 9
+          #   build-config: Release
+          #   build-os: Linux
+          #   build-libcxx: libstdc++
+
+          # - name: Macos_xcode10.3
+          #   os: macos-10.15
+          #   build-compiler: apple-clang
+          #   build-cversion: "10.0"
+          #   build-config: Release
+          #   build-os: Macos
+          #   build-xcode-version: 10.3
+          #   build-libcxx: libc++
+    steps:
+      - name: Checkout the source
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Setup python 3 version
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.7"
+
+      - name: Prepare build environment
+        uses: ./.github/actions/conan_build_setup
+        with:
+          conan_version: "1.40.4"
+          remote_user: ${{secrets.LKEB_ARTIFACTORY_USER}}
+          remote_password: ${{secrets.LKEB_ARTIFACTORY_PASSWORD}}
+
+      - name: Package Qt for ${{ matrix.os }} using conan
+        run: |
+          export CONAN_PACKAGE_NAME=`conan inspect --raw name conanfile.py`
+          echo Setting up a conan profile used to choose OS version
+          conan profile new action_build
+          conan profile update settings.arch=x86_64 action_build
+          conan profile update settings.arch_build=x86_64 action_build
+          if [[ $RUNNER_OS == "Windows" ]]; then
+            conan profile update settings.os=Windows action_build
+            conan profile update settings.os_build=Windows action_build
+            conan profile update settings.compiler="Visual Studio" action_build
+            conan profile update settings.compiler.runtime=${{ matrix.build-runtime }} action_build
+            conan profile update settings.compiler.version=${{ matrix.build-cversion }} action_build
+          else
+            conan profile update settings.os=${{ matrix.build-os }} action_build
+            conan profile update settings.os_build=${{ matrix.build-os }} action_build
+            conan profile update settings.compiler=${{ matrix.build-compiler }} action_build
+            conan profile update settings.compiler.version=${{ matrix.build-cversion }} action_build
+            conan profile update settings.compiler.libcxx=${{ matrix.build-libcxx }} action_build
+          fi
+          conan profile update settings.build_type=${{ matrix.build-config }} action_build
+          conan profile show action_build
+          export CONAN_SKIP_BROKEN_SYMLINKS_CHECK=1
+
+          conan create . lkeb/stable --profile action_build
+        shell: bash
+
+      - name: Upload package to artifactory
+        run: |
+          export CONAN_PACKAGE_NAME=`conan inspect --raw name conanfile.py`
+          conan upload --all --force --confirm -r lkeb_artifactory $CONAN_PACKAGE_NAME/*
+        shell: bash
