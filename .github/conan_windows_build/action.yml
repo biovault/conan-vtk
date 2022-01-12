@@ -68,7 +68,7 @@ runs:
         conan profile update settings.compiler.version=${{ inputs.conan-visual-version }} action_build
         conan profile show action_build
 
-        conan create . flann/1.9.1@lkeb/stable --profile action_build -s build_type=Release
+        conan create . vtk/9.1.0@lkeb/stable --profile action_build -s build_type=Release
 
       shell: cmd
       env:
