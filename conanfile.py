@@ -72,7 +72,7 @@ class VTKConan(ConanFile):
         if self.options.ioxdmf3:
             self.requires("boost/1.66.0@conan/stable")
         if self.options.qt:
-            self.requires("qt/5.15.2@lkeb/stable")
+            self.requires("qt/5.15.1@lkeb/stable")
             # self.options["qt"].shared = True
             if tools.os_info.is_linux:
                 self.options["qt"].qtx11extras = True
@@ -301,6 +301,10 @@ class VTKConan(ConanFile):
 
                     if tools.os_info.is_macos:
                         self.cmake_fix_macos_sdk_path(cmake_file)
+        # Debug
+        # self._pkg_bin("Debug")
+        # Release
+        self._pkg_bin("Release")
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
@@ -313,8 +317,3 @@ class VTKConan(ConanFile):
 
         if self.settings.os == "Linux":
             self.cpp_info.libs.append("pthread")
-
-        # Debug
-        # self._pkg_bin("Debug")
-        # Release
-        self._pkg_bin("Release")
