@@ -354,14 +354,14 @@ class VTKConan(ConanFile):
         return cmake
 
     def _do_build(self, cmake, build_type):
-        if self.settings.os == "Macos":
-            # run_environment does not work here because it appends path just from
-            # requirements, not from this package itself
-            # https://docs.conan.io/en/latest/reference/build_helpers/run_environment.html#runenvironment
-            lib_path = os.path.join(self.build_folder, "lib")
-            self.run(
-                f"DYLD_LIBRARY_PATH={lib_path} cmake --build build {cmake.build_config} -j"
-            )
+        # if self.settings.os == "Macos":
+        # run_environment does not work here because it appends path just from
+        # requirements, not from this package itself
+        # https://docs.conan.io/en/latest/reference/build_helpers/run_environment.html#runenvironment
+        #    lib_path = os.path.join(self.build_folder, "lib")
+        #    self.run(
+        #        f"DYLD_LIBRARY_PATH={lib_path} cmake --build build {cmake.build_config} -j"
+        #    )
         cmake.build(build_type=build_type)
         cmake.install(build_type=build_type)
 
