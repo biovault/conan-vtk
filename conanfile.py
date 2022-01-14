@@ -277,7 +277,6 @@ class VTKConan(ConanFile):
             tc.variables["VTK_MODULE_ENABLE_VTK_RenderingSceneGraph"] = "DONT_WANT"
             tc.variables["VTK_MODULE_ENABLE_VTK_RenderingVR"] = "DONT_WANT"
             tc.variables["VTK_MODULE_ENABLE_VTK_RenderingVolumeAMR"] = "DONT_WANT"
-            tc.variables["VTK_MODULE_ENABLE_VTK_RenderingVolumeOpenGL2"] = "DONT_WANT"
             tc.variables["VTK_MODULE_ENABLE_VTK_RenderingVtkJS"] = "DONT_WANT"
             tc.variables["VTK_MODULE_ENABLE_VTK_TestingCore"] = "DONT_WANT"
             tc.variables["VTK_MODULE_ENABLE_VTK_TestingGenericBridge"] = "DONT_WANT"
