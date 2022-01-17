@@ -39,6 +39,11 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Select Xcode for Mac only
+        if: startsWith(runner.os, 'macOS')
+        run: |
+          sudo xcode-select -switch /Applications/Xcode_${{matrix.build-xcode-version}}.app
+
       - name: Setup python 3 version
         uses: actions/setup-python@v2
         with:
