@@ -74,7 +74,7 @@ class VTKConan(ConanFile):
         if self.options.ioxdmf3:
             self.requires("boost/1.66.0@conan/stable")
         if self.options.qt:
-            self.requires("qt/5.15.2@lkeb/stable")
+            self.requires("qt/6.3.1@lkeb/stable")
             # self.options["qt"].shared = True
             if tools.os_info.is_linux:
                 self.options["qt"].qtx11extras = True
@@ -146,7 +146,7 @@ class VTKConan(ConanFile):
 
         # Locat qt and add path to cmake prefix to allow lib discovery
         qtpath = Path(self.deps_cpp_info["qt"].rootpath)
-        qt_root = str(list(qtpath.glob("**/Qt5Config.cmake"))[0].parents[3]).replace(
+        qt_root = str(list(qtpath.glob("**/Qt6Config.cmake"))[0].parents[3]).replace(
             "\\", "/"
         )
         tc.variables["CMAKE_PREFIX_PATH"] = qt_root
@@ -309,7 +309,7 @@ class VTKConan(ConanFile):
             tc.variables["VTK_MODULE_ENABLE_VTK_GUISupportQtSQL"] = "NO"
             tc.variables["VTK_MODULE_ENABLE_VTK_RenderingQt"] = "YES"
             tc.variables["VTK_MODULE_ENABLE_VTK_ViewsQt"] = "YES"
-            tc.variables["VTK_QT_VERSION"] = "5"
+            tc.variables["VTK_QT_VERSION"] = "6"
             tc.variables["VTK_BUILD_QT_DESIGNER_PLUGIN"] = "OFF"
         if self.options.mpi:
             tc.variables["VTK_Group_MPI"] = "ON"
