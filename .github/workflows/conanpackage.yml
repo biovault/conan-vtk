@@ -18,7 +18,7 @@ jobs:
             build-config: Release
 
           - name: Linux_gcc9
-            os: ubuntu-18.04
+            os: ubuntu-20.04
             build-compiler: gcc
             build-cversion: 9
             build-config: Release
