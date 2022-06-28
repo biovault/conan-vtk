@@ -76,8 +76,8 @@ class VTKConan(ConanFile):
         if self.options.qt:
             self.requires("qt/6.3.1@lkeb/stable")
             # self.options["qt"].shared = True
-            if tools.os_info.is_linux:
-                self.options["qt"].qtx11extras = True
+            # if tools.os_info.is_linux:
+            #    self.options["qt"].qtx11extras = True
 
     def _system_package_architecture(self):
         if tools.os_info.with_apt:
