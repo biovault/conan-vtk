@@ -74,7 +74,7 @@ class VTKConan(ConanFile):
         if self.options.ioxdmf3:
             self.requires("boost/1.66.0@conan/stable")
         if self.options.qt:
-            self.requires("qt/6.3.2@lkeb/stable")
+            self.requires("qt/6.8.2@lkeb/stable")
             # self.options["qt"].shared = True
             # if tools.os_info.is_linux:
             #    self.options["qt"].qtx11extras = True
