@@ -144,12 +144,17 @@ class VTKConan(ConanFile):
         tc.variables["BUILD_EXAMPLES"] = "OFF"
         tc.variables["BUILD_SHARED_LIBS"] = "TRUE" if self.options.shared else "FALSE"
 
-        # Locat qt and add path to cmake prefix to allow lib discovery
-        qtpath = Path(self.deps_cpp_info["qt"].rootpath)
-        qt_root = str(list(qtpath.glob("**/Qt6Config.cmake"))[0].parents[3]).replace(
-            "\\", "/"
-        )
-        tc.variables["CMAKE_PREFIX_PATH"] = qt_root
+        # Locate qt and add path to cmake prefix to allow lib discovery
+        qt_path = Path(self.deps_cpp_info["qt"].rootpath)
+        qt_cfg = list(qt_path.glob("**/Qt6Config.cmake"))[0]
+        qt_dir = qt_cfg.parents[0].as_posix()
+        qt_root = qt_cfg.parents[2].as_posix()
+
+        # for qt & ads
+        tc.variables["Qt6_ROOT"] = qt_root
+        tc.variables["Qt6_DIR"] = qt_dir
+        tc.variables["QT_DIR"] = qt_dir
+        tc.variables["CMAKE_PREFIX_PATH"] = f"{qt_root}"
         print("Qt root ", qt_root)
 
         if self.options.basic_viewer:
