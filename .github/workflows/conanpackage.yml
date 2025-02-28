@@ -30,7 +30,7 @@ jobs:
             build-cversion: 11
             build-config: Release
             build-os: Linux
-            build-libcxx: libstdc++
+            build-libcxx: libstdc++11
 
           - name: Linux_gcc13
             os: ubuntu-24.04
@@ -38,7 +38,7 @@ jobs:
             build-cversion: 13
             build-config: Release
             build-os: Linux
-            build-libcxx: libstdc++
+            build-libcxx: libstdc++11
 
           - name: Macos_xcode14.3
             os: macos-13
