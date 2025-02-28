@@ -9,7 +9,7 @@ from pathlib import Path, PureWindowsPath
 
 class VTKConan(ConanFile):
     name = "vtk"
-    version = "9.1.0"
+    version = "9.4.1"
     description = "Visualization Toolkit by Kitware"
     url = "http://github.com/bilke/conan-vtk"
     license = "MIT"
