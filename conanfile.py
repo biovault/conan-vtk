@@ -333,8 +333,7 @@ class VTKConan(ConanFile):
             Path(self.build_folder, "install")
         ).replace("\\", "/")
 
-        if self.settings.os == "Linux":
-            tc.variables["CMAKE_CONFIGURATION_TYPES"] = "Debug;Release"
+        tc.variables["CMAKE_CONFIGURATION_TYPES"] = "Debug;RelWithDebInfo;Release"
 
         return tc
 
